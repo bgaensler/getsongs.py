@@ -23,7 +23,7 @@ response = requests.get(request_url).json()
 
 f = codecs.open(outpath,'w','utf-8')
 
-f.write('<ul>'+'\n')
+f.write('<ul class=bullets>'+'\n')
 for x in range(10):
 	f.write("<li> "+response[method]['track'][x]['name']+" - "+response[method]['track'][x]['artist']['#text']+"\n")    
 f.write('</ul>'+"\n")
