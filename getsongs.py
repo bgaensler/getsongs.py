@@ -20,11 +20,13 @@ page = 1 #page of results to start retrieving at
 method = 'recenttracks'
 request_url = url.format(method, username, key, limit, extended, page)
 response = requests.get(request_url).json()
+lastlisten = response[method]['track'][0]['date']['#text'][0:11]
 
 f = codecs.open(outpath,'w','utf-8')
 
+f.write('<ul>'+'\n')
+f.write('<li> <a href=\"http://www.last.fm/user/bgaensler/?chartstyle=iTunesFIXED\">What I\'m listening to</a> (last listen '+lastlisten+'):'+'\n')
 f.write('<ul class=bullets>'+'\n')
 for x in range(10):
-	f.write("<li> "+response[method]['track'][x]['name']+" - "+response[method]['track'][x]['artist']['#text']+"\n")    
+        f.write("<li> "+response[method]['track'][x]['name']+" - "+response[method]['track'][x]['artist']['#text']+"\n")    
 f.write('</ul>'+"\n")
-
