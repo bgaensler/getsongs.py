@@ -5,9 +5,27 @@
 
 outpath = '/path-to-file/lastfm.inc'
 
-import requests, json, time, codecs, pandas as pd
-key ='LAST FM API KEY'
+import re, requests, json, time, codecs, pandas as pd
+from better_profanity import profanity
+key ='LAST.FM API KEY'
 username = 'USERNAME'
+
+# Load words from the better_profanity database
+profanity.load_censor_words()
+curse_words = set(str(word) for word in profanity.CENSOR_WORDSET) # set of all loaded curse words
+
+def star_vowels(word):
+    return re.sub(r'[aeiouAEIOU]', '*', word)
+
+def censor_substrings_with_better_profanity(text, curse_words):
+    result = text
+    for badword in curse_words:
+        # Compile a case-insensitive pattern for the word as a substring
+        pattern = re.compile(re.escape(badword), re.IGNORECASE)
+        def repl(match):
+            return star_vowels(match.group(0))
+        result = pattern.sub(repl, result)
+    return result
 
 # how long to pause between consecutive API requests
 pause_duration = 0.2
@@ -28,5 +46,5 @@ f.write('<ul>'+'\n')
 f.write('<li> <a href=\"http://www.last.fm/user/bgaensler/?chartstyle=iTunesFIXED\">What I\'m listening to</a> (last listen '+lastlisten+'):'+'\n')
 f.write('<ul class=bullets>'+'\n')
 for x in range(10):
-        f.write("<li> "+response[method]['track'][x]['name']+" - "+response[method]['track'][x]['artist']['#text']+"\n")    
+	f.write("<li> "+censor_substrings_with_better_profanity(response[method]['track'][x]['name'],curse_words)+" - "+censor_substrings_with_better_profanity(response[method]['track'][x]['artist']['#text'],curse_words)+"\n")
 f.write('</ul>'+"\n")
