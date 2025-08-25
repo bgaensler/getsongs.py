@@ -14,6 +14,10 @@ username = 'USERNAME'
 profanity.load_censor_words()
 curse_words = set(str(word) for word in profanity.CENSOR_WORDSET) # set of all loaded curse words
 
+# Remove OK words
+ok_words = {'aaaa', 'bbbb', 'cccc'}
+curse_words -= ok_words
+
 def star_vowels(word):
     return re.sub(r'[aeiouAEIOU]', '*', word)
 
