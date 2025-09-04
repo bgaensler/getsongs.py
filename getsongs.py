@@ -1,7 +1,7 @@
 #!/usr/bin/python3.8
 
 # Code to automatically list last 10 songs on last.fm
-# Written by BMG, 21jul2024
+# Written by BMG, 21jul2025
 
 outpath = '/path-to-file/lastfm.inc'
 
